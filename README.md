@@ -1,63 +1,36 @@
-# Node.JS TypeScript Template
+# Email Automation
 
-This template includes my standard configuration for a Node.js and TypeScript project. The linter and formatter have been configured, as well as the GitHub Actions workflows. A testing framework has also been prepared, using Chai's `assert` API. Our standard logging configuration is also included.
+This handles spinning up the droplets, managing the files, and tearing down the droplets with simple command line scripts. The idea is to make it less error-prone and tedious to prepare an email blast.
+
+Pairs with our [email blast utility](https://github.com/freecodecamp/ses-email-blast).
+
+## Requirements
+
+- You will need to have the [DigitalOcean CLI](https://docs.digitalocean.com/reference/doctl/) installed.
+- You will need to auth the `doctl` CLI, setting the `--context` to `fcc` (the commands rely on this auth context name.)
+- You will need to configure the environment variables. Copy `sample.env` to `.env` and fill in the values.
+- You will need an SSH key available in your DigitalOcean account.
 
 ## Usage
 
-To use this template, click the "Use this template" button above. You will be prompted to enter the name of your new repository. Once you have done so, you will be redirected to your new repository.
+You'll need to start by configuring the environment variables for the email blast servers themselves. Copy the `emails.env` and `mongo.env` from the `templates` directory to the `data` directory and fill in the values. Add an `emailBody.txt` file to the `data` directory and fill in the email body.
 
-You are welcome to extend and overwrite the configs as you desire (please do not PR your changes back to this template, these changes will be rejected).
+### Spin up the droplets
 
-TypeScript will read from the `src` directory and compile to a `prod` directory. The `test` directory will be ignored by the compiler, but will be linted to ensure the code follows your standards.
+Run `npm run setup.ts` to spin up new droplets. The script will automatically grant access to the configured ssh key, and assign the droplets to the configured project.
 
-There is an action that will create an issue on your new repository, with a helpful checklist of the settings we typically update / change.
+### Initialise the files
 
-## Configurations
+Run `npm run init.ts` to initialise the files on the droplets. This will copy the `emails.env` and `emailBody.txt` files to the droplets. It will also copy the `mongo.env` specifically to the first droplet, which is where you'll need to go run the database query.
 
-The configuration settings can be found in these repositories:
+### Generate the email list
 
-- [ESLint](https://github.com/naomi-lgbt/eslint-config)
-- [Prettier](https://github.com/naomi-lgbt/prettier-config)
-- [TypeScript](https://github.com/naomi-lgbt/typescript-config)
+Once the query is complete, run `npm run emails.ts`. This will pull down the full email list from the query, and batch it into files of equivalent size (or as close as it can), one for each droplet. It will push the email lists up to each droplet. Then you can ssh into each droplet and start the sending process.
 
-You are welcome to propose changes to the global configuration via issues on those repositories. However, the configurations are central to all of our projects, so please be prepared to justify your changes.
+### Clean up
 
-## Readme
+Run `npm run clean` to clean up your local email lists. This is very important for security.
 
-Below this line is the template for a project readme. Delete all of the text above, and uncomment the text below to use the template.
+### Teardown the droplets
 
-<!--# Project Name
-
-Project Description
-
-## Live Version
-
-This page is not yet deployed.
-
-This page is currently deployed. [View the live website.]()
-
-## Feedback and Bugs
-
-If you have feedback or a bug report, please feel free to open a GitHub issue!
-
-## Contributing
-
-If you would like to contribute to the project, you may create a Pull Request containing your proposed changes and we will review it as soon as we are able! Please review our [contributing guidelines](CONTRIBUTING.md) first.
-
-## Code of Conduct
-
-Before interacting with our community, please read our [Code of Conduct](CODE_OF_CONDUCT.md).
-
-## Licensing
-
-Copyright (C) 2022 Naomi Carrigan
-
-This Source Code Form is subject to the terms of the Mozilla Public
-License, v. 2.0. If a copy of the MPL was not distributed with this
-file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-The full license terms may be viewed in the [LICENSE.md file](./LICENSE.md)
-
-## Contact
-
-We may be contacted through our [Chat Server](http://chat.nhcarrigan.com) or via email at `contact@nhcarrigan.com`.-->
+Once the email blasts are all complete, run `npm run teardown` to automatically delete the droplets.
