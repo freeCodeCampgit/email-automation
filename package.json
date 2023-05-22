@@ -4,10 +4,18 @@
   "description": "A template for my nodejs projects",
   "main": "prod/index.js",
   "scripts": {
+    "db:files": "op run --no-masking --env-file='./prod.env' -- ts-node src/db/files.ts",
+    "db:setup": "op run --no-masking --env-file='./prod.env' -- ts-node src/db/setup.ts",
+    "db:teardown": "op run --no-masking --env-file='./prod.env' -- ts-node src/db/teardown.ts",
+    "emails:continue": "op run --no-masking --env-file='./prod.env' -- ts-node src/emails/continue.ts",
+    "emails:files": "ts-mocha -u tdd test/validate.spec.ts && op run --no-masking --env-file='./prod.env' -- ts-node src/emails/files.ts",
+    "emails:setup": "op run --no-masking --env-file='./prod.env' -- ts-node src/emails/setup.ts",
+    "emails:teardown": "op run --no-masking --env-file='./prod.env' -- ts-node src/emails/teardown.ts",
+    "scripts:block": "op run --no-masking --env-file='./prod.env' -- ts-node src/scripts/block.ts",
+    "scripts:clean": "op run --no-masking --env-file='./prod.env' -- ts-node src/scripts/clean.ts",
     "build": "tsc",
     "lint": "eslint src test --max-warnings 0",
-    "start": "node -r dotenv/config prod/index.js",
-    "test": "ts-mocha -u tdd  test/**/*.spec.ts --recursive --exit --timeout 10000"
+    "test": "ts-mocha -u tdd  test/**/*.spec.ts --exclude test/validate.spec.ts --recursive --exit --timeout 10000"
   },
   "repository": {
     "type": "git",
@@ -27,21 +35,23 @@
   },
   "homepage": "https://github.com/naomi-lgbt/nodejs-typescript-template#readme",
   "dependencies": {
-    "dotenv": "16.0.3",
-    "winston": "3.8.2"
+    "dotenv": "16.4.5",
+    "mongodb": "6.7.0",
+    "ts-node": "10.9.2",
+    "winston": "3.13.0"
   },
   "devDependencies": {
-    "@nhcarrigan/eslint-config": "1.1.2",
+    "@nhcarrigan/eslint-config": "1.1.3",
     "@nhcarrigan/prettier-config": "1.0.1",
     "@nhcarrigan/typescript-config": "1.0.1",
-    "@types/chai": "4.3.5",
-    "@types/mocha": "10.0.1",
-    "@types/node": "18.16.7",
-    "chai": "4.3.7",
-    "eslint": "8.40.0",
-    "mocha": "10.2.0",
+    "@types/chai": "4.3.16",
+    "@types/mocha": "10.0.6",
+    "@types/node": "18.19.33",
+    "chai": "4.4.1",
+    "eslint": "8.57.0",
+    "mocha": "10.4.0",
     "prettier": "2.8.8",
     "ts-mocha": "10.0.0",
-    "typescript": "5.0.4"
+    "typescript": "5.4.5"
   }
 }
