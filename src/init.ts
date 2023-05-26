@@ -12,10 +12,18 @@ import { range } from "./utils/range";
 
   logHandler.log("info", "Cleaning files.");
   await unlink(join(process.cwd(), "data", "emailList.csv"));
-  await open(join(process.cwd(), "data", "emailList.csv"), "w");
+  const listHandle = await open(
+    join(process.cwd(), "data", "emailList.csv"),
+    "w"
+  );
+  await listHandle.close();
   for (const num of countRange) {
     await unlink(join(process.cwd(), "data", `email${num}.csv`));
-    await open(join(process.cwd(), "data", `email${num}.csv`), "w");
+    const handle = await open(
+      join(process.cwd(), "data", `email${num}.csv`),
+      "w"
+    );
+    await handle.close();
   }
 
   logHandler.log("info", "Checking email data.");
@@ -41,17 +49,17 @@ import { range } from "./utils/range";
   for (const num of countRange) {
     logHandler.log("info", `Copying email body to email${num}...`);
     await asyncExec(
-      `scp ../data/emailBody.txt email${num}:/home/freecodecamp/email-blast/prod/emailBody.txt`
+      `scp data/emailBody.txt email${num}:/home/freecodecamp/email-blast/prod/emailBody.txt`
     );
     logHandler.log("info", `Copying .env to email${num}...`);
     await asyncExec(
-      `scp ../data/emails.env email${num}:/home/freecodecamp/email-blast/prod/.env`
+      `scp data/emails.env email${num}:/home/freecodecamp/email-blast/.env`
     );
   }
 
   logHandler.log("info", "Copying mongo.env to email1");
   await asyncExec(
-    `scp ../data/mongo.env email1:/home/freecodecamp/email-blast/prod/mongo.env`
+    `scp data/mongo.env email1:/home/freecodecamp/scripts/emails/.env`
   );
 
   logHandler.log("info", "Servers are ready to start the database query.");

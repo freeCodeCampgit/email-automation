@@ -13,7 +13,7 @@ const parseEmail = (line: string) => line.split(",")[0];
   const countRange = range(count);
   logHandler.log("info", "Fetching email list from server...");
   await asyncExec(
-    "scp email1:/home/freecodecamp/email-blast/prod/email.csv ../data/emailList.csv"
+    "scp email1:/home/freecodecamp/scripts/emails/email.csv data/emailList.csv"
   );
   logHandler.log("info", "Reading emails...");
   const emails = await readFile(
@@ -36,12 +36,12 @@ const parseEmail = (line: string) => line.split(",")[0];
       )}`
     );
     await writeFile(
-      join(process.cwd(), "data", "email1.csv"),
+      join(process.cwd(), "data", `email${num}.csv`),
       "email,unsubscribe\n" + emails.join("\n")
     );
     logHandler.log("info", `Copying email${num}.csv to email${num}...`);
     await asyncExec(
-      `scp ../data/email1.csv email${num}:/home/freecodecamp/email-blast/prod/validEmails.csv`
+      `scp data/email${num}.csv email${num}:/home/freecodecamp/email-blast/prod/validEmails.csv`
     );
   }
   logHandler.log("info", "Servers are ready to send email.");
