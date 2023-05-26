@@ -33,7 +33,7 @@
   "homepage": "https://github.com/naomi-lgbt/nodejs-typescript-template#readme",
   "dependencies": {
     "dotenv": "16.0.3",
-    "ts-node": "^10.9.1",
+    "ts-node": "10.9.1",
     "winston": "3.8.2"
   },
   "devDependencies": {
