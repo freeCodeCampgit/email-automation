@@ -25,7 +25,7 @@ import { logHandler } from "./utils/logHandler";
   );
   logHandler.log("info", `Found ${emailsToSend.length} emails to send.`);
 
-  const emailsToSendPath = join(process.cwd(), "updatedEmails.csv");
+  const emailsToSendPath = join(process.cwd(), "data", "updatedEmails.csv");
   await writeFile(
     emailsToSendPath,
     "email,unsubscribe\n" + emailsToSend.join("\n")

@@ -9,10 +9,18 @@ import { range } from "./utils/range";
   logHandler.log("info", "Cleaning files.");
   const count = getCount();
   await unlink(join(process.cwd(), "data", "emailList.csv"));
-  await open(join(process.cwd(), "data", "emailList.csv"), "w");
+  const listHandle = await open(
+    join(process.cwd(), "data", "emailList.csv"),
+    "w"
+  );
+  await listHandle.close();
   for (const num of range(count)) {
     await unlink(join(process.cwd(), "data", `email${num}.csv`));
-    await open(join(process.cwd(), "data", `email${num}.csv`), "w");
+    const handle = await open(
+      join(process.cwd(), "data", `email${num}.csv`),
+      "w"
+    );
+    await handle.close();
   }
   logHandler.log(
     "info",

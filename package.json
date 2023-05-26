@@ -33,7 +33,7 @@
   "homepage": "https://github.com/naomi-lgbt/nodejs-typescript-template#readme",
   "dependencies": {
     "dotenv": "16.0.3",
-    "ts-node": "^10.9.1",
+    "ts-node": "10.9.1",
     "winston": "3.8.2"
   },
   "devDependencies": {
@@ -42,7 +42,7 @@
     "@nhcarrigan/typescript-config": "1.0.1",
     "@types/chai": "4.3.5",
     "@types/mocha": "10.0.1",
-    "@types/node": "^18.16.7",
+    "@types/node": "18.16.7",
     "chai": "4.3.7",
     "eslint": "8.40.0",
     "mocha": "10.2.0",

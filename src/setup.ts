@@ -24,12 +24,12 @@ const getData = (data: string) => {
   for (const num of countRange) {
     logHandler.log("info", `Generating droplet ${num}...`);
     const { stdout } = await asyncExec(
-      `doctl compute droplet create --enable-monitoring --enable-private-networking --region nyc3 --size s-4vcpu-8gb --image ${process.env.SNAPSHOT_ID} --ssh-keys ${process.env.SSH_KEY_ID} --wait email-${num} --context fcc`
+      `doctl compute droplet create --enable-monitoring --enable-private-networking --region nyc3 --size s-4vcpu-8gb --image ${process.env.SNAPSHOT_ID} --ssh-keys ${process.env.SSH_KEY_ID} --wait email-${num} -o json --context fcc`
     );
     const { id, ip } = getData(stdout);
     logHandler.log("info", "Assigning droplet to project.");
     await asyncExec(
-      `doctl projects resources assign ${process.env.PROJECT_ID} --resource=do:droplet:${id}`
+      `doctl projects resources assign ${process.env.PROJECT_ID} --resource=do:droplet:${id} --context fcc`
     );
     lines.push(`Host email${num}`);
     lines.push(`  HostName ${ip}`);
