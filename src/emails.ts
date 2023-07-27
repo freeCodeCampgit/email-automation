@@ -28,7 +28,10 @@ const parseEmail = (line: string) => line.split(",")[0];
     `Found ${emailList.length} emails. Splitting into ${count} files of ${batchSize} emails...`
   );
   for (const num of countRange) {
-    const emails = emailList.splice(0, batchSize);
+    const emails =
+      num === countRange.slice(-1)[0]
+        ? emailList
+        : emailList.splice(0, batchSize);
     logHandler.log(
       "info",
       `Writing email${num}.csv from ${parseEmail(emails[0])} to ${parseEmail(
