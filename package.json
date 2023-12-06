@@ -7,12 +7,13 @@
     "clean": "ts-node -r dotenv/config src/clean.ts",
     "continue": "ts-node -r dotenv/config src/continue.ts",
     "emails": "ts-node -r dotenv/config src/emails.ts",
+    "preinit": "ts-mocha -u tdd test/validate.spec.ts",
     "init": "ts-node -r dotenv/config src/init.ts",
     "setup": "ts-node -r dotenv/config src/setup.ts",
     "teardown": "ts-node -r dotenv/config src/teardown.ts",
     "build": "tsc",
     "lint": "eslint src test --max-warnings 0",
-    "test": "ts-mocha -u tdd  test/**/*.spec.ts --recursive --exit --timeout 10000"
+    "test": "ts-mocha -u tdd  test/**/*.spec.ts --exclude test/validate.spec.ts --recursive --exit --timeout 10000"
   },
   "repository": {
     "type": "git",
