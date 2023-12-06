@@ -11,10 +11,6 @@ const parseEmail = (line: string) => line.split(",")[0];
 (async () => {
   const count = getCount();
   const countRange = range(count);
-  logHandler.log("info", "Fetching email list from server...");
-  await asyncExec(
-    "scp email1:/home/freecodecamp/scripts/emails/email.csv data/emailList.csv"
-  );
   logHandler.log("info", "Reading emails...");
   const emails = await readFile(
     join(process.cwd(), "data", "emailList.csv"),
@@ -36,7 +32,7 @@ const parseEmail = (line: string) => line.split(",")[0];
       "info",
       `Writing email${num}.csv from ${parseEmail(emails[0])} to ${parseEmail(
         emails[emails.length - 1]
-      )}`
+      )} (${emails.length} records)`
     );
     await writeFile(
       join(process.cwd(), "data", `email${num}.csv`),
@@ -55,6 +51,10 @@ const parseEmail = (line: string) => line.split(",")[0];
   logHandler.log("info", "Then ssh into the servers and start the process.");
   logHandler.log(
     "info",
-    "When you are satisfied with the emails, run `npm run clean` to clean up your local files for security."
+    "When the blast is complete, return here and run `pnpm run teardown`."
+  );
+  logHandler.log(
+    "warn",
+    "Don't forget to run `pnpm run clean` to clean up your local files for security."
   );
 })();

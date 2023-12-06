@@ -1,3 +1,6 @@
+import { stat } from "fs/promises";
+import { join } from "path";
+
 import { asyncExec } from "./utils/asyncExec";
 import { getCount } from "./utils/getCount";
 import { logHandler } from "./utils/logHandler";
@@ -13,6 +16,16 @@ const getData = (data: string) => {
 };
 
 (async () => {
+  const status = await stat(join(process.cwd(), "data", "email1.csv")).catch(
+    () => null
+  );
+  if (!status) {
+    logHandler.log(
+      "error",
+      "There doesn't appear to be an email list present. Did you mean to run `pnpm run db:setup`?"
+    );
+    return;
+  }
   const count = getCount();
   const countRange = range(count);
   const lines = [

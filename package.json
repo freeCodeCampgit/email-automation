@@ -6,6 +6,9 @@
   "scripts": {
     "clean": "ts-node -r dotenv/config src/clean.ts",
     "continue": "ts-node -r dotenv/config src/continue.ts",
+    "db:init": "ts-node -r dotenv/config src/db/init.ts",
+    "db:setup": "ts-node -r dotenv/config src/db/setup.ts",
+    "db:teardown": "ts-node -r dotenv/config src/db/teardown.ts",
     "emails": "ts-node -r dotenv/config src/emails.ts",
     "preinit": "ts-mocha -u tdd test/validate.spec.ts",
     "init": "ts-node -r dotenv/config src/init.ts",
@@ -49,6 +52,6 @@
     "mocha": "10.2.0",
     "prettier": "2.8.8",
     "ts-mocha": "10.0.0",
-    "typescript": "5.3.2"
+    "typescript": "5.2.2"
   }
 }

@@ -1,4 +1,4 @@
-import { unlink, open, readFile } from "fs/promises";
+import { readFile, stat } from "fs/promises";
 import { join } from "path";
 
 import { asyncExec } from "./utils/asyncExec";
@@ -7,24 +7,18 @@ import { logHandler } from "./utils/logHandler";
 import { range } from "./utils/range";
 
 (async () => {
+  const status = await stat(join(process.cwd(), "data", "email1.csv")).catch(
+    () => null
+  );
+  if (status) {
+    logHandler.log(
+      "error",
+      "Found existing email lists. Please run `pnpm run clean`."
+    );
+    return;
+  }
   const count = getCount();
   const countRange = range(count);
-
-  logHandler.log("info", "Cleaning files.");
-  await unlink(join(process.cwd(), "data", "emailList.csv"));
-  const listHandle = await open(
-    join(process.cwd(), "data", "emailList.csv"),
-    "w"
-  );
-  await listHandle.close();
-  for (const num of countRange) {
-    await unlink(join(process.cwd(), "data", `email${num}.csv`));
-    const handle = await open(
-      join(process.cwd(), "data", `email${num}.csv`),
-      "w"
-    );
-    await handle.close();
-  }
 
   logHandler.log("info", "Checking email data.");
   const env = await readFile(
