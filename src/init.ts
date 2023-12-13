@@ -50,17 +50,8 @@ import { range } from "./utils/range";
       `scp data/emails.env email${num}:/home/freecodecamp/email-blast/.env`
     );
   }
-
-  logHandler.log("info", "Copying mongo.env to email1");
-  await asyncExec(
-    `scp data/mongo.env email1:/home/freecodecamp/scripts/emails/.env`
-  );
-
-  logHandler.log("info", "Servers are ready to start the database query.");
-  logHandler.log("info", "Run the database query on email1.");
-  logHandler.log("info", "Set the output file to email.csv");
   logHandler.log(
     "info",
-    "Once the query is complete, return here and run `npm run emails`."
+    "Servers are ready to receive email list. Run `pnpm run emails`."
   );
 })();

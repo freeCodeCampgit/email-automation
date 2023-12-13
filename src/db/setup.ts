@@ -14,7 +14,7 @@ const getData = (data: string) => {
 };
 
 (async () => {
-  const status = await stat(join(process.cwd(), "data", "email1.csv")).catch(
+  const status = await stat(join(process.cwd(), "data", "emailList.csv")).catch(
     () => null
   );
   if (status) {
