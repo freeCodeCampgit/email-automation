@@ -36,8 +36,8 @@
   },
   "homepage": "https://github.com/naomi-lgbt/nodejs-typescript-template#readme",
   "dependencies": {
-    "dotenv": "16.3.1",
-    "ts-node": "10.9.1",
+    "dotenv": "16.4.5",
+    "ts-node": "10.9.2",
     "winston": "3.11.0"
   },
   "devDependencies": {
@@ -46,12 +46,12 @@
     "@nhcarrigan/typescript-config": "1.0.1",
     "@types/chai": "4.3.11",
     "@types/mocha": "10.0.6",
-    "@types/node": "18.19.2",
-    "chai": "4.3.10",
-    "eslint": "8.55.0",
-    "mocha": "10.2.0",
+    "@types/node": "18.19.17",
+    "chai": "4.4.1",
+    "eslint": "8.56.0",
+    "mocha": "10.3.0",
     "prettier": "2.8.8",
     "ts-mocha": "10.0.0",
-    "typescript": "5.2.2"
+    "typescript": "5.3.3"
   }
 }
