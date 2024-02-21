@@ -1,4 +1,4 @@
-import { unlink, open, readFile } from "fs/promises";
+import { readFile, stat } from "fs/promises";
 import { join } from "path";
 
 import { asyncExec } from "./utils/asyncExec";
@@ -7,24 +7,18 @@ import { logHandler } from "./utils/logHandler";
 import { range } from "./utils/range";
 
 (async () => {
+  const status = await stat(join(process.cwd(), "data", "email1.csv")).catch(
+    () => null
+  );
+  if (status) {
+    logHandler.log(
+      "error",
+      "Found existing email lists. Please run `pnpm run clean`."
+    );
+    return;
+  }
   const count = getCount();
   const countRange = range(count);
-
-  logHandler.log("info", "Cleaning files.");
-  await unlink(join(process.cwd(), "data", "emailList.csv"));
-  const listHandle = await open(
-    join(process.cwd(), "data", "emailList.csv"),
-    "w"
-  );
-  await listHandle.close();
-  for (const num of countRange) {
-    await unlink(join(process.cwd(), "data", `email${num}.csv`));
-    const handle = await open(
-      join(process.cwd(), "data", `email${num}.csv`),
-      "w"
-    );
-    await handle.close();
-  }
 
   logHandler.log("info", "Checking email data.");
   const env = await readFile(
@@ -56,17 +50,8 @@ import { range } from "./utils/range";
       `scp data/emails.env email${num}:/home/freecodecamp/email-blast/.env`
     );
   }
-
-  logHandler.log("info", "Copying mongo.env to email1");
-  await asyncExec(
-    `scp data/mongo.env email1:/home/freecodecamp/scripts/emails/.env`
-  );
-
-  logHandler.log("info", "Servers are ready to start the database query.");
-  logHandler.log("info", "Run the database query on email1.");
-  logHandler.log("info", "Set the output file to email.csv");
   logHandler.log(
     "info",
-    "Once the query is complete, return here and run `npm run emails`."
+    "Servers are ready to receive email list. Run `pnpm run emails`."
   );
 })();

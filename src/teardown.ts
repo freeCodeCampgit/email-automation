@@ -12,5 +12,8 @@ import { range } from "./utils/range";
       `doctl compute droplet delete email-${num} --force --context fcc`
     );
   }
-  logHandler.log("info", "Droplets destroyed.");
+  logHandler.log(
+    "info",
+    "Droplets destroyed. Remember to clean your files with `pnpm run clean`."
+  );
 })();

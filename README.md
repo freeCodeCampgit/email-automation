@@ -15,22 +15,38 @@ Pairs with our [email blast utility](https://github.com/freecodecamp/ses-email-b
 
 You'll need to start by configuring the environment variables for the email blast servers themselves. Copy the `emails.env` and `mongo.env` from the `templates` directory to the `data` directory and fill in the values. Add an `emailBody.txt` file to the `data` directory and fill in the email body.
 
-### Spin up the droplets
+### Getting the Email List
 
-Run `npm run setup.ts` to spin up new droplets. The script will automatically grant access to the configured ssh key, and assign the droplets to the configured project.
+#### Spin up the DB droplet
 
-### Initialise the files
+To run the database query, you'll first need a droplet to do so. Typically you want to run the DB query the day before the blast, to avoid delaying your send. Run `pnpm run db:setup` to spin up the droplet.
 
-Run `npm run init.ts` to initialise the files on the droplets. This will copy the `emails.env` and `emailBody.txt` files to the droplets. It will also copy the `mongo.env` specifically to the first droplet, which is where you'll need to go run the database query.
+#### Prepare the DB droplet
 
-### Generate the email list
+Running `pnpm run db:init` will load the necessary files to the query droplet, and give you instructions for running the query.
 
-Once the query is complete, run `npm run emails.ts`. This will pull down the full email list from the query, and batch it into files of equivalent size (or as close as it can), one for each droplet. It will push the email lists up to each droplet. Then you can ssh into each droplet and start the sending process.
+#### Teardown the DB droplet
 
-### Clean up
+Once the database query is complete, run `pnpm run db:teardown` to download the email list and automatically destroy the droplet to save costs.
 
-Run `npm run clean` to clean up your local email lists. This is very important for security.
+### Running the Blast
 
-### Teardown the droplets
+#### Spin up the droplets
 
-Once the email blasts are all complete, run `npm run teardown` to automatically delete the droplets.
+Run `pnpm run setup` to spin up new droplets. The script will automatically grant access to the configured ssh key, and assign the droplets to the configured project.
+
+#### Initialise the files
+
+Run `pnpm run init` to initialise the files on the droplets. This will copy the `emails.env` and `emailBody.txt` files to the droplets. It will also copy the `mongo.env` specifically to the first droplet, which is where you'll need to go run the database query.
+
+#### Generate the email list
+
+Once the query is complete, run `pnpm run emails`. This will pull down the full email list from the query, and batch it into files of equivalent size (or as close as it can), one for each droplet. It will push the email lists up to each droplet. Then you can ssh into each droplet and start the sending process.
+
+#### Clean up
+
+Run `pnpm run clean` to clean up your local email lists. This is very important for security.
+
+#### Teardown the droplets
+
+Once the email blasts are all complete, run `pnpm run teardown` to automatically delete the droplets.
