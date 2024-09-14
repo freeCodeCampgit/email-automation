@@ -8,6 +8,9 @@ import { logHandler } from "../utils/logHandler";
   await asyncExec(
     `aws --profile freeCodeCamp sesv2 put-suppressed-destination --reason COMPLAINT --email-address ${email}`
   );
+  await asyncExec(
+    `aws --profile freeCodeCamp --region us-east-1 sesv2 put-suppressed-destination --reason COMPLAINT --email-address ${email}`
+  );
   logHandler.info("Added to AWS suppression list.");
   if (!process.env.MONGO_URI) {
     logHandler.error("No mongo url in env!");
